@@ -4,6 +4,7 @@ import express from "express";
 import { omikujiRouter } from "./routes/omikuji.route.js";
 import { jankenRouter } from "./routes/janken.route.js";
 import { scrapingRouter } from "./routes/scraping.route.js";
+import { weatherRouter } from "./routes/weather.route.js";
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use("/omikuji", (req, res) => omikujiRouter(req, res));
 app.use("/janken", (req, res) => jankenRouter(req, res));
 
 app.use("/scraping", (req, res) => scrapingRouter(req, res));
+
+app.use("/weather", (req, res) => weatherRouter(req, res));
 
 app.listen(port, () => {
 	console.log(`Example app listening at http://localhost:${port}`);
