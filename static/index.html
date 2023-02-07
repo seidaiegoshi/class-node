@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Document</title>
+		<link rel="stylesheet" href="./css/style.css" />
+	</head>
+	<body>
+		<h1>なんかすごいアプリ</h1>
+
+		<table id="output">
+			<tbody>
+				<tr>
+					<td>now loading...</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+
+	<script>
+		const requestToServer = async (url) => {
+			const response = await fetch(url);
+			const json = await response.json();
+			return json;
+		};
+
+		const createElement = ({ data }) =>
+			[
+				`<tbody>`,
+				`<tr><td>日付</td><td>${data.weatherData.time}</td></tr>`,
+				`<tr><td>最高気温</td><td>${data.weatherData.temperature_2m_max}</td></tr>`,
+				`<tr><td>最低気温</td><td>${data.weatherData.temperature_2m_min}</td></tr>`,
+				`<tr><td>今日のクレド（ja）</td><td>${data.credoData.text_ja}</td></tr>`,
+				`</tbody>`,
+				`<img src="${data.credoData.img_url}" alt="credoImage">`,
+			].join("");
+
+		const requestWithGeolocation = async (position) => {
+			const { latitude, longitude } = position.coords;
+			const url = "http://localhost:3001/today";
+			const json = await requestToServer(`${url}?latitude=${latitude}&longitude=${longitude}`);
+			document.getElementById("output").innerHTML = createElement(json);
+		};
+
+		const requestWithOutGeolocation = async () => {
+			const url = "http://localhost:3001/today";
+			const json = await requestToServer(url);
+			console.log(json);
+			document.getElementById("output").innerHTML = createElement(json);
+		};
+
+		const options = {
+			maximumAge: 30000,
+			timeout: 10000,
+			enableHighAccuracy: true,
+		};
+
+		navigator.geolocation.getCurrentPosition(requestWithGeolocation, requestWithOutGeolocation, options);
+	</script>
+</html>

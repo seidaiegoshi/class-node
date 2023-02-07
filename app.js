@@ -14,12 +14,13 @@ app.use(express.json());
 
 const port = 3001;
 
-app.get("/", (req, res) => {
-	res.json({
-		uri: "/",
-		message: "Hello Node.js!",
-	});
-});
+app.use("/", express.static("static"));
+// app.get("/", (req, res) => {
+// 	res.json({
+// 		uri: "/",
+// 		message: "Hello Node.js!",
+// 	});
+// });
 
 // 🔽 追加 おみくじのルーティングを変更
 app.use("/omikuji", (req, res) => omikujiRouter(req, res));
