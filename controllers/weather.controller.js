@@ -3,7 +3,7 @@
 import { getWeather } from "../services/weather.service.js";
 
 export const getResult = async (req, res, next) => {
-	console.log(req.query);
+	// console.log(req.query);
 	const latitude = Number(req.query.latitude ?? 35.6785);
 	const longitude = Number(req.query.latitude ?? 139.6823);
 	try {
